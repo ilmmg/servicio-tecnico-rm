@@ -1,8 +1,9 @@
-"use client";
+﻿"use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { AppSettings } from "@/lib/types";
+import { toast } from "sonner";
 
 
 
@@ -12,9 +13,29 @@ const DEFAULT_SETTINGS: AppSettings = {
 };
 
 export function useSettings() {
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
   const [settings, setSettings] = useState<AppSettings>(DEFAULT_SETTINGS);
   const [loaded, setLoaded] = useState(false);
+
+  const syncDolar = useCallback(async () => {
+    try {
+      const res = await fetch("https://dolarapi.com/v1/dolares/blue");
+      const data = await res.json();
+      if (data && data.compra && data.venta) {
+        const promedio = Math.round((data.compra + data.venta) / 2);
+        setSettings((prev) => ({ ...prev, cotizacionDolar: promedio }));
+
+        await supabase
+          .from("settings")
+          .upsert({ key: "cotizacion_dolar", value: promedio, updated_at: new Date().toISOString() });
+
+        return promedio;
+      }
+    } catch (error) {
+      console.error("Error fetching dolar API:", error);
+    }
+    return null;
+  }, [supabase]);
 
   useEffect(() => {
     async function load() {
@@ -25,6 +46,7 @@ export function useSettings() {
       if (error) {
         console.error("Error cargando settings:", error);
         setLoaded(true);
+        await syncDolar();
         return;
       }
 
@@ -36,50 +58,34 @@ export function useSettings() {
 
       setSettings(s);
       setLoaded(true);
+      await syncDolar();
     }
-    load();
-  }, []);
-
-  const syncDolar = useCallback(async () => {
-    try {
-      const res = await fetch("https://dolarapi.com/v1/dolares/blue");
-      const data = await res.json();
-      if (data && data.compra && data.venta) {
-        const promedio = Math.round((data.compra + data.venta) / 2);
-        setSettings((prev) => ({ ...prev, cotizacionDolar: promedio }));
-
-        // Guardar en Supabase
-        await supabase
-          .from("settings")
-          .upsert({ key: "cotizacion_dolar", value: promedio, updated_at: new Date().toISOString() });
-
-        return promedio;
-      }
-    } catch (error) {
-      console.error("Error fetching dolar API:", error);
-    }
-    return null;
-  }, []);
-
-  useEffect(() => {
-    if (loaded) {
-      syncDolar();
-    }
-  }, [loaded, syncDolar]);
+    void load();
+  }, [supabase, syncDolar]);
 
   const updateCotizacion = useCallback(async (value: number) => {
     setSettings((prev) => ({ ...prev, cotizacionDolar: value }));
-    await supabase
+    const { error } = await supabase
       .from("settings")
       .upsert({ key: "cotizacion_dolar", value: value, updated_at: new Date().toISOString() });
-  }, []);
+    if (error) {
+      toast.error("Error al actualizar cotizacion");
+    } else {
+      toast.success("Cotizacion actualizada");
+    }
+  }, [supabase]);
 
   const updateMargenGlobal = useCallback(async (value: number) => {
     setSettings((prev) => ({ ...prev, margenGlobal: value }));
-    await supabase
+    const { error } = await supabase
       .from("settings")
       .upsert({ key: "margen_global", value: value, updated_at: new Date().toISOString() });
-  }, []);
+    if (error) {
+      toast.error("Error al actualizar margen");
+    } else {
+      toast.success("Margen actualizado");
+    }
+  }, [supabase]);
 
   return { settings, loaded, updateCotizacion, updateMargenGlobal, syncDolar };
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import Tooltip from "@/app/admin/components/Tooltip";
 import { Plus, Search, Pencil, Trash2, Package, DollarSign, TrendingUp, Calculator, Store } from "lucide-react";
 import { useInventory } from "@/lib/hooks/useInventory";
@@ -25,11 +25,8 @@ export default function InventarioPage() {
   const [tempMargen, setTempMargen] = useState<string>("");
   const [showMargenConfirm, setShowMargenConfirm] = useState(false);
 
-  useMemo(() => {
-    if (settingsLoaded && tempMargen === "") {
-      setTempMargen(settings.margenGlobal.toString());
-    }
-  }, [settingsLoaded, settings.margenGlobal, tempMargen]);
+  const margenConfirmValue =
+    settingsLoaded && tempMargen === "" ? settings.margenGlobal.toString() : tempMargen;
 
   const costoTotalActual = Math.max((form.costoPesos || 0), (form.costoUSD || 0) * settings.cotizacionDolar);
   const margenActual = form.precio > 0 && costoTotalActual > 0 ? Math.round(((form.precio / costoTotalActual) - 1) * 100) : 0;
@@ -52,7 +49,11 @@ export default function InventarioPage() {
     e.preventDefault();
     const data = { ...form };
     if (!data.publicadoEnML) data.linkML = "";
-    editingId ? await updateProducto(editingId, data) : await addProducto(data);
+    if (editingId) {
+      await updateProducto(editingId, data);
+    } else {
+      await addProducto(data);
+    }
     setShowModal(false); setEditingId(null);
   };
 
@@ -266,10 +267,10 @@ export default function InventarioPage() {
 
       {/* Confirm Margen */}
       <Modal isOpen={showMargenConfirm} onClose={() => { setShowMargenConfirm(false); setTempMargen(settings.margenGlobal.toString()); }} title="Confirmar Margen Global" maxWidth="max-w-md">
-        <p className="text-rm-text-muted mb-6">Cambiar margen de <strong>{settings.margenGlobal}%</strong> a <strong>{tempMargen}%</strong>?</p>
+        <p className="text-rm-text-muted mb-6">Cambiar margen de <strong>{settings.margenGlobal}%</strong> a <strong>{margenConfirmValue}%</strong>?</p>
         <div className="flex gap-3">
           <button onClick={() => { setShowMargenConfirm(false); setTempMargen(settings.margenGlobal.toString()); }} className="flex-1 btn-glass px-5 py-3 text-sm">Cancelar</button>
-          <button onClick={() => { updateMargenGlobal(Number(tempMargen)); setShowMargenConfirm(false); }} className="flex-1 btn-pill-blue px-5 py-3 text-sm">Confirmar</button>
+          <button onClick={() => { updateMargenGlobal(Number(margenConfirmValue)); setShowMargenConfirm(false); }} className="flex-1 btn-pill-blue px-5 py-3 text-sm">Confirmar</button>
         </div>
       </Modal>
     </div>

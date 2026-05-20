@@ -1,4 +1,4 @@
-
+﻿
 "use client";
 
 import { Package, ClipboardList, DollarSign, AlertTriangle, TrendingUp, CheckCircle2 } from "lucide-react";
@@ -20,7 +20,8 @@ export default function AdminDashboard() {
 
   const invStats = getInvStats();
   const ordStats = getOrdStats();
-  const hoyStr = new Date().toISOString().split("T")[0];
+  const now = new Date();
+  const hoyStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
   const ingresosHoy = ventas.filter(v => v.fecha.startsWith(hoyStr)).reduce((sum, v) => sum + v.total, 0);
 
   return (

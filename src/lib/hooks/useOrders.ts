@@ -1,6 +1,6 @@
-"use client";
+﻿"use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { OrdenTrabajo, HistorialEntry, EstadoOrden, DashboardStats } from "@/lib/types";
 import { toast } from "sonner";
@@ -54,13 +54,12 @@ function mapOrdenToDB(data: Partial<OrdenTrabajo>): Record<string, unknown> {
 }
 
 export function useOrders() {
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
   const [ordenes, setOrdenes] = useState<OrdenTrabajo[]>([]);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     async function load() {
-      // Cargar ordenes
       const { data: ordenesData, error: ordError } = await supabase
         .from("ordenes")
         .select("*")
@@ -73,7 +72,6 @@ export function useOrders() {
         return;
       }
 
-      // Cargar historial para todas las ordenes
       const { data: historialData } = await supabase
         .from("historial_ordenes")
         .select("*")
@@ -95,7 +93,7 @@ export function useOrders() {
       setLoaded(true);
     }
     load();
-  }, []);
+  }, [supabase]);
 
   const addOrden = useCallback(
     async (data: Omit<OrdenTrabajo, "id" | "historial" | "createdAt" | "updatedAt">) => {
@@ -112,7 +110,6 @@ export function useOrders() {
         return null;
       }
 
-      // Insertar historial inicial
       const { data: hInserted } = await supabase
         .from("historial_ordenes")
         .insert({
@@ -125,13 +122,12 @@ export function useOrders() {
         .single();
 
       const historial = hInserted ? [mapHistorialFromDB(hInserted)] : [];
-      toast.success("Orden creada exitosamente");
       const orden = mapOrdenFromDB(inserted, historial);
-      toast.success("Operación exitosa");
+      toast.success("Orden creada exitosamente");
       setOrdenes((prev) => [orden, ...prev]);
       return orden;
     },
-    []
+    [supabase]
   );
 
   const updateOrden = useCallback(
@@ -148,7 +144,7 @@ export function useOrders() {
         return;
       }
 
-      toast.success("Operación exitosa");
+      toast.success("Orden actualizada");
       setOrdenes((prev) =>
         prev.map((o) =>
           o.id === id
@@ -157,7 +153,7 @@ export function useOrders() {
         )
       );
     },
-    []
+    [supabase]
   );
 
   const changeEstado = useCallback(
@@ -165,7 +161,6 @@ export function useOrders() {
       const orden = ordenes.find((o) => o.id === id);
       if (!orden) return;
 
-      // Actualizar estado en la DB
       const { error } = await supabase
         .from("ordenes")
         .update({ estado: nuevoEstado })
@@ -173,10 +168,10 @@ export function useOrders() {
 
       if (error) {
         console.error("Error cambiando estado:", error);
+        toast.error("Error al cambiar el estado");
         return;
       }
 
-      // Insertar historial
       const { data: hInserted } = await supabase
         .from("historial_ordenes")
         .insert({
@@ -196,7 +191,7 @@ export function useOrders() {
         fecha: new Date().toISOString(),
       };
 
-      toast.success("Operación exitosa");
+      toast.success("Estado actualizado");
       setOrdenes((prev) =>
         prev.map((o) => {
           if (o.id !== id) return o;
@@ -209,17 +204,19 @@ export function useOrders() {
         })
       );
     },
-    [ordenes]
+    [ordenes, supabase]
   );
 
   const deleteOrden = useCallback(async (id: string) => {
     const { error } = await supabase.from("ordenes").delete().eq("id", id);
     if (error) {
       console.error("Error eliminando orden:", error);
+      toast.error("Error al eliminar la orden");
       return;
     }
+    toast.success("Orden eliminada");
     setOrdenes((prev) => prev.filter((o) => o.id !== id));
-  }, []);
+  }, [supabase]);
 
   const getStats = useCallback((): Partial<DashboardStats> => {
     const today = new Date().toDateString();

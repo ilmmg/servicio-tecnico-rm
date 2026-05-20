@@ -34,16 +34,15 @@ function VentasContent() {
   const [lastVenta, setLastVenta] = useState<Venta | null>(null);
 
   useEffect(() => {
-    if (invLoaded && searchParams) {
-      const pid = searchParams.get("productId");
-      if (pid) {
-        const product = productos.find(p => p.id === pid);
-        if (product && product.cantidad > 0 && cart.length === 0) {
-          setCart([{ p: product, qty: 1 }]);
-          setActiveTab("pos");
-        }
-      }
-    }
+    if (!invLoaded || !searchParams) return;
+    const pid = searchParams.get("productId");
+    if (!pid) return;
+    const product = productos.find((p) => p.id === pid);
+    if (!product || product.cantidad <= 0) return;
+    queueMicrotask(() => {
+      setCart((prev) => (prev.length === 0 ? [{ p: product, qty: 1 }] : prev));
+      setActiveTab("pos");
+    });
   }, [invLoaded, searchParams, productos]);
 
   const filteredProducts = useMemo(() => {

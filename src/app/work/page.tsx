@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { Search, Snowflake, ClipboardList, Clock, CheckCircle2, AlertCircle, Wrench, Package, ArrowLeft } from "lucide-react";
@@ -19,8 +19,6 @@ export default function PublicWorkStatus() {
     setResult(found || null);
   };
 
-  const states = ["recibido", "en_diagnostico", "en_reparacion", "listo", "entregado"];
-  const currentStateIdx = result ? states.indexOf(result.estado) : -1;
 
   return (
     <div className="min-h-screen bg-rm-black text-white p-6">

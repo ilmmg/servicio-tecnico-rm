@@ -1,8 +1,9 @@
-"use client";
+﻿"use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { Venta, VentaItem } from "@/lib/types";
+import { toast } from "sonner";
 
 
 
@@ -28,7 +29,7 @@ function mapVentaItemFromDB(row: Record<string, unknown>): VentaItem {
 }
 
 export function useSales() {
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
   const [ventas, setVentas] = useState<Venta[]>([]);
   const [loaded, setLoaded] = useState(false);
 
@@ -46,7 +47,6 @@ export function useSales() {
         return;
       }
 
-      // Cargar items de todas las ventas
       const ventaIds = (ventasData || []).map((v: Record<string, unknown>) => v.id);
       let itemsData: Record<string, unknown>[] = [];
       if (ventaIds.length > 0) {
@@ -73,11 +73,10 @@ export function useSales() {
       setLoaded(true);
     }
     load();
-  }, []);
+  }, [supabase]);
 
   const addVenta = useCallback(
     async (data: Omit<Venta, "id" | "fecha">) => {
-      // Insertar venta
       const { data: inserted, error } = await supabase
         .from("ventas")
         .insert({
@@ -91,10 +90,10 @@ export function useSales() {
 
       if (error) {
         console.error("Error creando venta:", error);
+        toast.error("Error al registrar la venta");
         return null as unknown as Venta;
       }
 
-      // Insertar items
       const itemsToInsert = data.items.map((item) => ({
         venta_id: inserted.id,
         producto_id: item.productoId || null,
@@ -106,10 +105,11 @@ export function useSales() {
       await supabase.from("venta_items").insert(itemsToInsert);
 
       const venta = mapVentaFromDB(inserted, data.items);
+      toast.success("Venta registrada exitosamente");
       setVentas((prev) => [venta, ...prev]);
       return venta;
     },
-    []
+    [supabase]
   );
 
   return { ventas, loaded, addVenta };

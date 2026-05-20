@@ -4,12 +4,13 @@
 import { useState } from "react";
 import Sidebar from "./components/Sidebar";
 import { Toaster } from "sonner";
-import { Menu, Snowflake, Sun, Moon } from "lucide-react";
+import { Menu, Snowflake } from "lucide-react";
+import ThemeToggleButton from "@/components/ThemeToggleButton";
 import { useTheme } from "@/lib/ThemeProvider";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { theme, toggle } = useTheme();
+  const { theme } = useTheme();
 
   return (
     <div className="min-h-screen bg-rm-black transition-colors duration-300">
@@ -24,9 +25,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <span className="font-extrabold italic tracking-tight text-sm">RM ADMIN</span>
         </div>
         <div className="flex items-center gap-1">
-          <button onClick={toggle} className="p-2.5 text-rm-text-muted hover:text-rm-blue rounded-lg active:scale-90 transition-all" title={theme === "dark" ? "Modo claro" : "Modo oscuro"}>
-            {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-          </button>
+          <ThemeToggleButton className="p-2.5 text-rm-text-muted hover:text-rm-blue rounded-lg active:scale-90 transition-all" />
           <button onClick={() => setMobileOpen(true)} className="p-2.5 text-rm-text-muted hover:text-rm-blue rounded-lg active:scale-90 transition-all">
             <Menu className="w-5 h-5" />
           </button>

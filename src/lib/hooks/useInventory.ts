@@ -1,6 +1,6 @@
-"use client";
+﻿"use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { Producto, DashboardStats } from "@/lib/types";
 import { toast } from "sonner";
@@ -47,7 +47,7 @@ function mapToDB(data: Partial<Producto>): Record<string, unknown> {
 }
 
 export function useInventory() {
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
   const [productos, setProductos] = useState<Producto[]>([]);
   const [loaded, setLoaded] = useState(false);
 
@@ -68,7 +68,7 @@ export function useInventory() {
       setLoaded(true);
     }
     load();
-  }, []);
+  }, [supabase]);
 
   const addProducto = useCallback(
     async (data: Omit<Producto, "id" | "createdAt" | "updatedAt">) => {
@@ -85,13 +85,12 @@ export function useInventory() {
         return null;
       }
 
-      toast.success("Producto guardado correctamente");
       const producto = mapFromDB(inserted);
-      toast.success("Producto actualizado");
+      toast.success("Producto guardado correctamente");
       setProductos((prev) => [producto, ...prev]);
       return producto;
     },
-    []
+    [supabase]
   );
 
   const updateProducto = useCallback(
@@ -117,7 +116,7 @@ export function useInventory() {
         )
       );
     },
-    []
+    [supabase]
   );
 
   const deleteProducto = useCallback(async (id: string) => {
@@ -131,11 +130,10 @@ export function useInventory() {
 
     toast.success("Producto eliminado");
     setProductos((prev) => prev.filter((p) => p.id !== id));
-  }, []);
+  }, [supabase]);
 
   const deductStock = useCallback(
     async (items: { productoId: string; cantidad: number }[]) => {
-      // Actualizar cada producto en la DB
       for (const item of items) {
         const current = productos.find((p) => p.id === item.productoId);
         if (current) {
@@ -147,7 +145,7 @@ export function useInventory() {
         }
       }
 
-      toast.success("Producto actualizado");
+      toast.success("Stock actualizado");
       setProductos((prev) =>
         prev.map((p) => {
           const item = items.find((i) => i.productoId === p.id);
@@ -162,7 +160,7 @@ export function useInventory() {
         })
       );
     },
-    [productos]
+    [productos, supabase]
   );
 
   const getStats = useCallback((): Partial<DashboardStats> => {

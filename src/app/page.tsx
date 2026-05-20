@@ -1,6 +1,7 @@
-﻿import { Phone, MapPin, Truck, MessageCircle, Snowflake, ArrowRight, Shield, Settings, Zap, Disc, Wrench, ShoppingBag } from "lucide-react";
+﻿import { Phone, MapPin, Truck, MessageCircle, Snowflake, ArrowRight, Shield, Settings, Zap, Disc, Wrench, ShoppingBag, CheckCircle2, CalendarDays, HousePlus, Star, Sparkles, MoveRight } from "lucide-react";
 import Link from "next/link";
 import ShippingAction from "@/components/ShippingAction";
+import ThemeToggleButton from "@/components/ThemeToggleButton";
 
 const FacebookIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
@@ -119,12 +120,31 @@ const AcSVG = () => (
   </div>
 );
 
-const FEATURES = [
-  { title: "Reparados a Nuevos", desc: "Repuestos originales y mano de obra especializada. Tu electrodoméstico queda como de fábrica." },
-  { title: "Garantía Escrita", desc: "Todos nuestros trabajos tienen garantía. Trabajamos con responsabilidad y transparencia." },
-  { title: "Precios Accesibles", desc: "Las mejores tarifas del mercado sin resignar calidad. Presupuesto sin compromiso." },
-  { title: "Plan Canje", desc: "Tomamos tu electrodoméstico usado en parte de pago. Renová de forma inteligente." },
+const HIGHLIGHTS = [
+  { title: "Atención clara", desc: "Te explicamos el problema, la solución y el valor antes de comenzar." },
+  { title: "Visita a domicilio", desc: "Vamos a tu casa para que no tengas que mover el equipo si no hace falta." },
+  { title: "Garantía escrita", desc: "Cada trabajo queda respaldado para que tengas tranquilidad después de la reparación." },
 ];
+
+const STEPS = [
+  {
+    icon: CalendarDays,
+    title: "Coordinamos la visita",
+    desc: "Nos escribís por WhatsApp y te respondemos con una ventana horaria simple, sin vueltas.",
+  },
+  {
+    icon: HousePlus,
+    title: "Revisamos en el lugar",
+    desc: "Evaluamos la falla, te contamos qué conviene reparar y qué piezas harían falta.",
+  },
+  {
+    icon: CheckCircle2,
+    title: "Entregamos listo para usar",
+    desc: "Probamos el equipo contigo y dejamos las indicaciones básicas para cuidarlo mejor.",
+  },
+];
+
+const SERVICE_AREAS = ["Heladeras", "Lavarropas", "Microondas", "Hornos", "Aires", "Pequeños electrodomésticos"];
 
 const PRODUCTOS = [
   { nombre: "Correa Lavarropas", precio: "$8.500", img: "/images/correa.png", link: "#" },
@@ -144,7 +164,7 @@ export default function Home() {
       {/* === HEADER (Liquid Glass) === */}
       <header className="fixed top-0 left-0 right-0 z-50">
         <div className="max-w-6xl mx-auto px-4 pt-3">
-          <div className="liquid-glass rounded-2xl px-6 py-3 flex justify-between items-center">
+          <div className="liquid-glass rounded-2xl px-5 sm:px-6 py-3 flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-rm-blue/20 rounded-xl border border-rm-blue/20">
                 <Snowflake className="w-5 h-5 text-rm-blue" />
@@ -153,7 +173,13 @@ export default function Home() {
                 RM <span className="text-rm-text-muted font-sans font-bold text-sm not-italic tracking-normal">SERVICIO TÉCNICO</span>
               </span>
             </div>
+            <div className="hidden md:flex items-center gap-1 text-sm font-medium">
+              <a href="#servicios" className="px-3 py-2 rounded-xl text-rm-text-muted hover:text-white hover:bg-white/5 transition-colors">Servicios</a>
+              <a href="#como-trabajamos" className="px-3 py-2 rounded-xl text-rm-text-muted hover:text-white hover:bg-white/5 transition-colors">Cómo trabajamos</a>
+              <a href="#contacto" className="px-3 py-2 rounded-xl text-rm-text-muted hover:text-white hover:bg-white/5 transition-colors">Contacto</a>
+            </div>
             <div className="flex items-center gap-2">
+              <ThemeToggleButton className="flex items-center gap-2 px-3 py-2 rounded-xl text-rm-text-muted hover:text-white hover:bg-white/5 transition-colors" />
               <Link href="/admin" className="hidden sm:flex items-center justify-center w-10 h-10 rounded-xl text-rm-text-muted hover:text-white hover:bg-white/5 transition-colors" title="Panel Admin">
                 <Settings className="w-4 h-4" />
               </Link>
@@ -162,8 +188,19 @@ export default function Home() {
         </div>
       </header>
 
+      <section className="fixed top-[78px] left-0 right-0 z-40 px-4 pointer-events-none hidden md:block">
+        <div className="max-w-6xl mx-auto flex justify-center">
+          <div className="pointer-events-auto inline-flex items-center gap-2 liquid-glass-subtle rounded-full px-3 py-2 text-xs sm:text-sm text-rm-text-muted shadow-lg">
+            <span className="px-3 py-1 rounded-full bg-white/5 text-white">Reparación simple</span>
+            <a href="#como-trabajamos" className="hover:text-white transition-colors">Paso a paso</a>
+            <span className="opacity-30">•</span>
+            <a href="#contacto" className="hover:text-white transition-colors">Sin complicaciones</a>
+          </div>
+        </div>
+      </section>
+
       {/* === HERO WITH FLOATING APPLIANCES === */}
-      <section className="relative pt-36 pb-16 px-6">
+      <section className="relative pt-40 pb-14 px-6 scroll-mt-28">
         <div className="hidden lg:block">
           <Link href="/admin/inventario" className="absolute left-[3%] top-[22%] hover:scale-110 transition-transform"><FridgeSVG /></Link>
           <Link href="/admin/inventario" className="absolute right-[5%] top-[18%] hover:scale-110 transition-transform"><WashingMachineSVG /></Link>
@@ -172,60 +209,93 @@ export default function Home() {
           <Link href="/admin/inventario" className="absolute left-[40%] top-[8%] hover:scale-110 transition-transform"><AcSVG /></Link>
         </div>
 
-        <div className="max-w-3xl mx-auto text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-5 py-2 liquid-glass-subtle rounded-full text-white text-sm font-semibold mb-10">
-            <div className="w-2 h-2 rounded-full bg-rm-blue animate-pulse" />
-            Heladeras · Lavarropas · Microondas
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <div className="inline-flex items-center gap-2 px-5 py-2 liquid-glass-subtle rounded-full text-white text-sm font-semibold mb-8">
+            <Sparkles className="w-4 h-4 text-rm-blue" />
+            Cuidamos tu casa como si fuera la nuestra
           </div>
 
-          <h2 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tighter text-white leading-[0.92] mb-8">
-            Volvé a<br/>disfrutar<br/>
-            <span className="text-gradient-blue">tus equipos.</span>
+          <h2 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tighter text-white leading-[0.92] mb-6">
+            Reparaciones
+            <br />
+            <span className="text-gradient-blue">claras, rápidas</span>
+            <br />
+            y sin estrés.
           </h2>
 
-          <p className="text-lg sm:text-xl text-rm-text-muted font-medium max-w-xl mx-auto mb-12 leading-relaxed">
-            Más de 20 años reparando electrodomésticos en Laferrere. Calidad, precio y confianza.
+          <p className="text-lg sm:text-xl text-rm-text-muted font-medium max-w-2xl mx-auto mb-8 leading-relaxed">
+            Más de 20 años reparando electrodomésticos en Laferrere con una atención cercana, explicaciones simples y seguimiento real.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a href="https://wa.me/5491149723221" className="w-full sm:w-auto flex items-center justify-center gap-2 btn-pill-blue px-10 py-4 text-lg">
-              <MessageCircle className="w-5 h-5" /> Pedir Presupuesto
+              <MessageCircle className="w-5 h-5" /> Consultar por WhatsApp
             </a>
-            <a href="#servicios" className="w-full sm:w-auto flex items-center justify-center gap-2 btn-pill-outline px-10 py-4 text-lg">
-              Conocé más <ArrowRight className="w-5 h-5" />
+            <a href="#como-trabajamos" className="w-full sm:w-auto flex items-center justify-center gap-2 btn-pill-outline px-10 py-4 text-lg">
+              Ver cómo trabajamos <MoveRight className="w-5 h-5" />
             </a>
           </div>
-        </div>
-      </section>
 
-      {/* === FEATURES (Liquid Glass Cards) === */}
-      <section id="servicios" className="px-6 pb-20 relative z-10">
-        <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            {FEATURES.map((f, i) => (
-              <a href="https://wa.me/5491149723221" key={i} className="liquid-glass glass-shine rounded-2xl p-8 sm:p-9 hover:-translate-y-1 transition-transform duration-300">
-                <div className="w-10 h-10 rounded-2xl bg-rm-blue/15 border border-rm-blue/20 flex items-center justify-center text-rm-blue font-black text-lg mb-5">
-                  {String(i + 1).padStart(2, '0')}
+          <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
+            {HIGHLIGHTS.map((item, index) => (
+              <div key={index} className="liquid-glass-subtle rounded-2xl p-4 sm:p-5">
+                <div className="flex items-center gap-2 mb-2 text-white font-semibold">
+                  <Star className="w-4 h-4 text-rm-blue" />
+                  {item.title}
                 </div>
-                <h4 className="text-xl font-bold text-white tracking-tight mb-3">{f.title}</h4>
-                <p className="text-rm-text-muted leading-relaxed">{f.desc}</p>
-              </a>
+                <p className="text-sm text-rm-text-muted leading-relaxed">{item.desc}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
+      {/* === WHAT WE DO === */}
+      <section id="servicios" className="px-6 pb-16 relative z-10 scroll-mt-28">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-8">
+            <div>
+              <p className="text-rm-blue font-bold text-sm tracking-[0.2em] uppercase mb-3">Servicios</p>
+              <h3 className="text-3xl font-black text-white tracking-tighter mb-2">Qué resolvemos, sin hacerte dar vueltas</h3>
+              <p className="text-rm-text-muted max-w-2xl">La idea es simple: identificar la falla, explicarte la solución y avanzar solo si te cierra. Nada de formularios largos ni vueltas innecesarias.</p>
+            </div>
+            <div className="flex flex-wrap gap-2 text-sm text-rm-text-muted">
+              {SERVICE_AREAS.map((area) => (
+                <span key={area} className="px-3 py-2 rounded-full liquid-glass-subtle">{area}</span>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {STEPS.map((step, index) => {
+              const Icon = step.icon;
+              return (
+                <div key={step.title} className="liquid-glass glass-shine rounded-2xl p-7 h-full">
+                  <div className="flex items-start gap-4">
+                    <div className="w-11 h-11 rounded-2xl bg-rm-blue/15 border border-rm-blue/20 flex items-center justify-center text-rm-blue shrink-0">
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-bold text-rm-text-muted uppercase tracking-[0.2em] mb-2">Paso {index + 1}</div>
+                      <h4 className="text-xl font-bold text-white tracking-tight mb-2">{step.title}</h4>
+                      <p className="text-rm-text-muted leading-relaxed">{step.desc}</p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
       {/* === CATALOG (Mock E-commerce) === */}
-      <section className="px-6 pb-20 relative z-10">
+      <section className="px-6 pb-20 relative z-10 scroll-mt-28">
         <div className="max-w-5xl mx-auto">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-10 gap-4">
             <div>
               <h3 className="text-3xl font-black text-white tracking-tighter mb-2">Repuestos y Accesorios</h3>
-              <p className="text-rm-text-muted">Encontrá lo que necesitás para tu equipo.</p>
+              <p className="text-rm-text-muted">Algunas piezas y accesorios que solemos trabajar. Si no ves el tuyo, lo buscamos juntos.</p>
             </div>
-            <a href="#" className="hidden sm:flex items-center gap-2 text-rm-blue font-bold hover:text-white transition-colors">
-              Ver tienda completa <ArrowRight className="w-4 h-4" />
-            </a>
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -238,16 +308,13 @@ export default function Home() {
                 <h4 className="text-white font-bold mb-1 flex-1">{prod.nombre}</h4>
                 <div className="flex items-center justify-between mt-2">
                   <span className="text-rm-blue font-black text-lg">{prod.precio}</span>
-                  <button className="p-2 bg-rm-blue/10 text-rm-blue rounded-lg group-hover:bg-rm-blue group-hover:text-white transition-colors" title="Comprar">
+                  <span className="p-2 bg-rm-blue/10 text-rm-blue rounded-lg group-hover:bg-rm-blue group-hover:text-white transition-colors pointer-events-none" aria-hidden>
                     <ShoppingBag className="w-4 h-4" />
-                  </button>
+                  </span>
                 </div>
               </a>
             ))}
           </div>
-          <a href="#" className="sm:hidden flex items-center justify-center gap-2 btn-pill-outline w-full py-4 mt-6">
-            Ver tienda completa <ArrowRight className="w-4 h-4" />
-          </a>
         </div>
       </section>
 
@@ -265,28 +332,62 @@ export default function Home() {
         </div>
       </section>
 
-      {/* === QUICK ACTIONS (Liquid Glass) === */}
-      <section className="px-6 pb-20 relative z-10">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-5">
-          <ShippingAction />
-          <a href="https://www.google.com/maps/dir/?api=1&destination=Ruiz+de+los+Llanos+3132,+Gregorio+de+Laferrere,+Provincia+de+Buenos+Aires" target="_blank" rel="noopener noreferrer" className="liquid-glass glass-shine rounded-2xl p-7 flex items-center gap-4 group hover:-translate-y-0.5 transition-all">
-            <div className="p-3 rounded-xl bg-rm-blue/10 border border-rm-blue/15 group-hover:bg-rm-blue/20 transition-colors">
-              <MapPin className="w-6 h-6 text-rm-blue" />
+      {/* === CONTACTO Y ATAJOS === */}
+      <section id="contacto" className="px-6 pb-20 relative z-10 scroll-mt-28">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <div className="liquid-glass glass-shine rounded-3xl p-8 sm:p-10">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="p-3 rounded-2xl bg-rm-blue/15 border border-rm-blue/20">
+                <MessageCircle className="w-6 h-6 text-rm-blue" />
+              </div>
+              <div>
+                <p className="text-xs uppercase tracking-[0.2em] text-rm-text-muted font-bold mb-1">Contacto rápido</p>
+                <h3 className="text-2xl font-black text-white tracking-tight">Empezá por un mensaje corto</h3>
+              </div>
             </div>
-            <div>
-              <h4 className="text-base font-bold text-white mb-0.5">Acercate al local</h4>
-              <p className="text-rm-text-muted text-xs">Ruiz de los Llanos 3132</p>
+            <p className="text-rm-text-muted leading-relaxed max-w-xl mb-6">
+              Contanos qué equipo es, qué hace y desde cuándo. Con eso ya podemos orientarte y decirte si conviene visita, reparación en casa o cambio de pieza.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <a href="https://wa.me/5491149723221" className="flex-1 flex items-center justify-center gap-2 btn-pill-blue px-8 py-4 text-base">
+                <MessageCircle className="w-5 h-5" /> Escribir por WhatsApp
+              </a>
+              <a href="tel:+5491149723221" className="flex-1 flex items-center justify-center gap-2 btn-pill-outline px-8 py-4 text-base">
+                <Phone className="w-5 h-5" /> Llamar ahora
+              </a>
             </div>
-          </a>
-          <a href="#" className="liquid-glass glass-shine rounded-2xl p-7 flex items-center gap-4 group hover:-translate-y-0.5 transition-all">
-            <div className="w-auto h-12 flex items-center justify-center bg-[#FFE600] rounded-xl px-4 py-2 shadow-lg group-hover:scale-105 transition-transform">
-              <img src="https://http2.mlstatic.com/frontend-assets/ml-web-navigation/ui-navigation/5.21.22/mercadolibre/logo__large_plus.png" alt="MercadoLibre" className="h-6 w-auto object-contain" />
-            </div>
-            <div>
-              <h4 className="text-base font-bold text-white mb-0.5">MercadoLibre</h4>
-              <p className="text-rm-text-muted text-xs">Comprá nuestros productos</p>
-            </div>
-          </a>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <ShippingAction />
+            <a href="https://www.google.com/maps/dir/?api=1&destination=Ruiz+de+los+Llanos+3132,+Gregorio+de+Laferrere,+Provincia+de+Buenos+Aires" target="_blank" rel="noopener noreferrer" className="liquid-glass glass-shine rounded-2xl p-7 flex items-center gap-4 group hover:-translate-y-0.5 transition-all">
+              <div className="p-3 rounded-xl bg-rm-blue/10 border border-rm-blue/15 group-hover:bg-rm-blue/20 transition-colors">
+                <MapPin className="w-6 h-6 text-rm-blue" />
+              </div>
+              <div>
+                <h4 className="text-base font-bold text-white mb-0.5">Acercate al local</h4>
+                <p className="text-rm-text-muted text-xs">Ruiz de los Llanos 3132</p>
+              </div>
+            </a>
+            <a href="#servicios" className="liquid-glass glass-shine rounded-2xl p-7 flex items-center gap-4 group hover:-translate-y-0.5 transition-all">
+              <div className="p-3 rounded-xl bg-rm-blue/10 border border-rm-blue/15 group-hover:bg-rm-blue/20 transition-colors">
+                <Wrench className="w-6 h-6 text-rm-blue" />
+              </div>
+              <div>
+                <h4 className="text-base font-bold text-white mb-0.5">Ver servicios</h4>
+                <p className="text-rm-text-muted text-xs">Paso a paso y sin fricción</p>
+              </div>
+            </a>
+            <a href="#" className="liquid-glass glass-shine rounded-2xl p-7 flex items-center gap-4 group hover:-translate-y-0.5 transition-all">
+              <div className="w-auto h-12 flex items-center justify-center bg-[#FFE600] rounded-xl px-4 py-2 shadow-lg group-hover:scale-105 transition-transform">
+                <img src="https://http2.mlstatic.com/frontend-assets/ml-web-navigation/ui-navigation/5.21.22/mercadolibre/logo__large_plus.png" alt="MercadoLibre" className="h-6 w-auto object-contain" />
+              </div>
+              <div>
+                <h4 className="text-base font-bold text-white mb-0.5">MercadoLibre</h4>
+                <p className="text-rm-text-muted text-xs">Comprá nuestros productos</p>
+              </div>
+            </a>
+          </div>
         </div>
       </section>
 

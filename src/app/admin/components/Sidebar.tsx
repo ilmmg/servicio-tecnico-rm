@@ -3,8 +3,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Package, ClipboardList, Home, Snowflake, Link as LinkIcon, ShoppingCart, X, Sun, Moon } from "lucide-react";
-import { useTheme } from "@/lib/ThemeProvider";
+import { LayoutDashboard, Package, ClipboardList, Home, Snowflake, Link as LinkIcon, ShoppingCart, X } from "lucide-react";
+import ThemeToggleButton from "@/components/ThemeToggleButton";
+import LogoutButton from "./LogoutButton";
 
 const NAV_ITEMS = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
@@ -21,7 +22,6 @@ interface SidebarProps {
 
 export default function Sidebar({ mobileOpen, setMobileOpen }: SidebarProps) {
   const pathname = usePathname();
-  const { theme, toggle } = useTheme();
 
   return (
     <>
@@ -76,14 +76,11 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: SidebarProps) {
           </nav>
 
           <div className="p-3 border-t border-white/5 space-y-2">
-            <button
-              onClick={toggle}
+            <ThemeToggleButton
+              showLabel
               className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-rm-text-muted hover:text-rm-blue hover:bg-white/5 transition-all active:scale-95"
-              title={theme === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
-            >
-              {theme === "dark" ? <Sun className="w-5 h-5 shrink-0" /> : <Moon className="w-5 h-5 shrink-0" />}
-              <span className="font-medium text-sm">{theme === "dark" ? "Modo Claro" : "Modo Oscuro"}</span>
-            </button>
+            />
+            <LogoutButton className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-rm-text-muted hover:text-rm-blue hover:bg-white/5 transition-all active:scale-95" />
             <Link href="/" className="flex items-center gap-3 px-4 py-3 rounded-xl text-rm-text-muted hover:text-rm-blue hover:bg-white/5 transition-all">
               <Home className="w-5 h-5 shrink-0" />
               <span className="font-medium text-sm">Volver al sitio</span>

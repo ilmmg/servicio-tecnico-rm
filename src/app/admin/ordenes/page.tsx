@@ -36,7 +36,15 @@ export default function OrdenesPage() {
     setForm({ clienteNombre: o.clienteNombre, clienteTelefono: o.clienteTelefono, equipo: o.equipo, marca: o.marca, modelo: o.modelo, problemaReportado: o.problemaReportado, diagnostico: o.diagnostico, estado: o.estado, fechaIngreso: o.fechaIngreso.split("T")[0], fechaEstimada: o.fechaEstimada ? o.fechaEstimada.split("T")[0] : "", presupuesto: o.presupuesto });
     setEditingId(o.id); setShowModal(true);
   };
-  const handleSubmit = async (e: React.FormEvent) => { e.preventDefault(); editingId ? await updateOrden(editingId, form) : await addOrden(form); setShowModal(false); setEditingId(null); };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (editingId) {
+      await updateOrden(editingId, form);
+    } else {
+      await addOrden(form);
+    }
+    setShowModal(false); setEditingId(null);
+  };
   const handleAdvanceEstado = async (orden: OrdenTrabajo) => { const idx = ESTADO_FLOW.indexOf(orden.estado); if (idx < ESTADO_FLOW.length - 1) { await changeEstado(orden.id, ESTADO_FLOW[idx + 1], estadoNota); setEstadoNota(""); } };
   const handleRegresarEstado = async (orden: OrdenTrabajo) => { const idx = ESTADO_FLOW.indexOf(orden.estado); if (idx > 0) { await changeEstado(orden.id, ESTADO_FLOW[idx - 1], "Regreso por correccion"); } };
 
