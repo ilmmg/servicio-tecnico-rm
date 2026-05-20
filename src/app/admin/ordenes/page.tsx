@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { Plus, Search, Pencil, Trash2, ClipboardList, ArrowRightCircle, Clock, Undo2 } from "lucide-react";
@@ -23,6 +23,7 @@ export default function OrdenesPage() {
   const [form, setForm] = useState(EMPTY_FORM);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [estadoNota, setEstadoNota] = useState("");
+  const [noteModalData, setNoteModalData] = useState<{orden: OrdenTrabajo, newState: EstadoOrden} | null>(null);
 
   if (!loaded) { return (<div className="flex items-center justify-center min-h-[60vh]"><div className="w-8 h-8 border-2 border-rm-blue border-t-transparent rounded-full animate-spin" /></div>); }
 
@@ -45,7 +46,7 @@ export default function OrdenesPage() {
     }
     setShowModal(false); setEditingId(null);
   };
-  const handleAdvanceEstado = async (orden: OrdenTrabajo) => { const idx = ESTADO_FLOW.indexOf(orden.estado); if (idx < ESTADO_FLOW.length - 1) { await changeEstado(orden.id, ESTADO_FLOW[idx + 1], estadoNota); setEstadoNota(""); } };
+  const handleAdvanceEstado = (orden: OrdenTrabajo) => { const idx = ESTADO_FLOW.indexOf(orden.estado); if (idx < ESTADO_FLOW.length - 1) { setNoteModalData({ orden, newState: ESTADO_FLOW[idx + 1] }); } };
   const handleRegresarEstado = async (orden: OrdenTrabajo) => { const idx = ESTADO_FLOW.indexOf(orden.estado); if (idx > 0) { await changeEstado(orden.id, ESTADO_FLOW[idx - 1], "Regreso por correccion"); } };
 
   const handleCobrar = async (orden: OrdenTrabajo) => {
@@ -181,6 +182,20 @@ export default function OrdenesPage() {
         <div className="flex gap-3">
           <button onClick={() => setDeleteConfirm(null)} className="flex-1 btn-glass px-5 py-3 text-sm active:scale-95">Cancelar</button>
           <button onClick={() => { if (deleteConfirm) { deleteOrden(deleteConfirm); setDeleteConfirm(null); } }} className="flex-1 px-5 py-3 rounded-xl bg-red-600/80 backdrop-blur-sm border border-red-500/20 text-white font-bold hover:bg-red-500/80 transition-all text-sm active:scale-95">Eliminar</button>
+        </div>
+      </Modal>
+      {/* Note Modal */}
+      <Modal isOpen={!!noteModalData} onClose={() => setNoteModalData(null)} title="Avanzar Estado" maxWidth="max-w-md">
+        <div className="space-y-4">
+          <p className="text-sm text-rm-text-muted">Avanzando a <strong className="text-white">{noteModalData && ESTADO_ORDEN_LABELS[noteModalData.newState]}</strong></p>
+          <div>
+            <label className={lc}>Nota al historial (Opcional)</label>
+            <textarea rows={3} value={estadoNota} onChange={(e) => setEstadoNota(e.target.value)} className={`${ic} resize-none`} placeholder="El equipo fue revisado y..." />
+          </div>
+          <div className="flex gap-3 pt-2">
+            <button onClick={() => { if (noteModalData) { changeEstado(noteModalData.orden.id, noteModalData.newState, ""); setNoteModalData(null); setEstadoNota(""); } }} className="flex-1 btn-glass px-5 py-3 text-sm active:scale-95">Omitir</button>
+            <button onClick={() => { if (noteModalData) { changeEstado(noteModalData.orden.id, noteModalData.newState, estadoNota); setNoteModalData(null); setEstadoNota(""); } }} className="flex-1 btn-pill-blue px-5 py-3 text-sm active:scale-95">Guardar y Avanzar</button>
+          </div>
         </div>
       </Modal>
     </div>

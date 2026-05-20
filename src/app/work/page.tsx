@@ -2,21 +2,38 @@
 
 import { useState } from "react";
 import { Search, Snowflake, ClipboardList, Clock, CheckCircle2, AlertCircle, Wrench, Package, ArrowLeft } from "lucide-react";
-import { useOrders } from "@/lib/hooks/useOrders";
+import { createClient } from "@/lib/supabase/client";
 import { ESTADO_ORDEN_LABELS, ESTADO_ORDEN_COLORS, formatDate } from "@/lib/utils";
 import Link from "next/link";
 
 export default function PublicWorkStatus() {
-  const { ordenes, loaded } = useOrders();
+  const supabase = createClient();
+  const [loading, setLoading] = useState(false);
   const [searchId, setSearchId] = useState("");
-  const [result, setResult] = useState<ReturnType<typeof ordenes.find> | null>(null);
+  const [result, setResult] = useState<any | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!searchId) return;
+    
     setHasSearched(true);
-    const found = ordenes.find((o) => o.id.toLowerCase() === searchId.toLowerCase());
-    setResult(found || null);
+    setLoading(true);
+    setResult(null);
+    
+    try {
+      const { data, error } = await supabase.rpc('get_order_by_id_public', { order_id: searchId.trim() });
+      if (error) {
+        console.error(error);
+        setResult(null);
+      } else if (data) {
+        setResult(data.orden);
+      }
+    } catch (err) {
+      setResult(null);
+    }
+    
+    setLoading(false);
   };
 
 
@@ -47,9 +64,8 @@ export default function PublicWorkStatus() {
               className="w-full bg-transparent border-none py-4 pl-12 pr-4 text-white focus:ring-0 placeholder:text-white/20 font-bold" 
             />
           </div>
-          <button type="submit" className="bg-rm-blue hover:bg-rm-blue/80 text-white font-bold px-8 rounded-xl transition-all shadow-lg shadow-rm-blue/20">
-            Buscar
-          </button>
+          <button type="submit" disabled={loading} className="bg-rm-blue disabled:opacity-50 hover:bg-rm-blue/80 text-white font-bold px-8 rounded-xl transition-all shadow-lg shadow-rm-blue/20">
+            {loading ? "Buscando..." : "Buscar"}</button>
         </form>
 
         {hasSearched && !result && (
