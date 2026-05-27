@@ -3,6 +3,7 @@
 import { FormEvent, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, LockKeyhole, Mail, ShieldCheck, Snowflake } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
@@ -65,8 +66,8 @@ export default function LoginClient({ nextPath, errorParam }: LoginClientProps) 
         <section className="liquid-glass glass-shine rounded-3xl p-8 sm:p-10 flex flex-col justify-between min-h-[520px]">
           <div>
             <div className="flex items-center gap-3 mb-8">
-              <div className="p-3 rounded-2xl bg-rm-blue/15 border border-rm-blue/20">
-                <Snowflake className="w-6 h-6 text-rm-blue" />
+              <div className="w-12 h-12 flex items-center justify-center overflow-hidden rounded-2xl">
+                <Image src="/images/logo-rm.png" alt="RM Logo" width={48} height={48} className="object-contain" />
               </div>
               <div>
                 <p className="text-xs uppercase tracking-[0.2em] text-rm-text-muted font-bold mb-1">Acceso privado</p>

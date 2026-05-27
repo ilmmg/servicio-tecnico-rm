@@ -2,6 +2,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, Package, ClipboardList, Home, Snowflake, Link as LinkIcon, ShoppingCart, X } from "lucide-react";
 import ThemeToggleButton from "@/components/ThemeToggleButton";
@@ -38,8 +39,8 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: SidebarProps) {
         <div className="relative z-10 flex flex-col h-full">
           <div className="flex items-center justify-between p-5 border-b border-white/5 min-h-[72px]">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-rm-blue/15 rounded-xl border border-rm-blue/15 shrink-0">
-                <Snowflake className="w-5 h-5 text-rm-blue" />
+              <div className="w-10 h-10 flex items-center justify-center overflow-hidden shrink-0 rounded-xl">
+                <Image src="/images/logo-rm.png" alt="RM Logo" width={40} height={40} className="object-contain" />
               </div>
               <div className="overflow-hidden">
                 <span className="text-lg font-extrabold italic tracking-tight">RM</span>{" "}

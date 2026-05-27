@@ -21,6 +21,7 @@ import {
   Microwave,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import ThemeToggleButton from "@/components/ThemeToggleButton";
 
 /* ============================== */
@@ -108,8 +109,8 @@ export default function Home() {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-rm-black/80 backdrop-blur-md border-b border-rm-border/50">
         <div className="max-w-4xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-rm-blue/15 border border-rm-blue/20 rounded-lg flex items-center justify-center">
-              <Wrench className="w-4 h-4 text-rm-blue" />
+            <div className="w-8 h-8 flex items-center justify-center overflow-hidden rounded-lg">
+              <Image src="/images/logo-rm.png" alt="RM Logo" width={32} height={32} className="object-contain" />
             </div>
             <span className="text-lg font-extrabold tracking-tight">RM</span>
           </Link>
@@ -378,7 +379,9 @@ export default function Home() {
       <footer className="px-6 pb-8">
         <div className="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-rm-text-muted">
           <div className="flex items-center gap-2">
-            <Wrench className="w-3.5 h-3.5 text-rm-blue" />
+            <div className="w-5 h-5 flex items-center justify-center overflow-hidden rounded-md">
+              <Image src="/images/logo-rm.png" alt="RM Logo" width={20} height={20} className="object-contain" />
+            </div>
             <span className="font-bold text-rm-text">RM</span>
             <span>Servicio Técnico</span>
           </div>
