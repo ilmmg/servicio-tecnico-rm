@@ -1,4 +1,4 @@
-import { MessageCircle, Phone, MapPin, Wrench, Settings, CheckCircle } from "lucide-react";
+import { MessageCircle, Phone, MapPin, Wrench, Settings, CheckCircle, Shield, Clock, Star, Zap } from "lucide-react";
 import Link from "next/link";
 import ThemeToggleButton from "@/components/ThemeToggleButton";
 
@@ -12,6 +12,29 @@ const SERVICIOS = [
   "Aires acondicionados",
   "Plaquetas Inverter",
   "Motores eléctricos",
+];
+
+const VENTAJAS = [
+  {
+    icon: "shield",
+    title: "Garantía escrita",
+    desc: "Respaldamos cada reparación. Si vuelve a fallar, volvemos sin costo.",
+  },
+  {
+    icon: "zap",
+    title: "Diagnóstico digital",
+    desc: "Instrumental profesional para detectar fallas con precisión, sin adivinar.",
+  },
+  {
+    icon: "star",
+    title: "+20 años de experiencia",
+    desc: "Conocemos todas las marcas y modelos del mercado.",
+  },
+  {
+    icon: "clock",
+    title: "Respuesta rápida",
+    desc: "Coordinamos visita en el día o al siguiente. Sin demoras innecesarias.",
+  },
 ];
 
 const PASOS = [
@@ -31,6 +54,13 @@ const PASOS = [
     desc: "Trabajamos con repuestos de calidad. Probamos todo y dejamos garantía escrita.",
   },
 ];
+
+const VENTAJA_ICONS: Record<string, React.ReactNode> = {
+  shield: <Shield className="w-5 h-5" />,
+  zap: <Zap className="w-5 h-5" />,
+  star: <Star className="w-5 h-5" />,
+  clock: <Clock className="w-5 h-5" />,
+};
 
 export default function Home() {
   return (
@@ -198,45 +228,80 @@ export default function Home() {
       </section>
 
       {/* ============================== */}
-      {/* PROMO + CTA FINAL */}
+      {/* POR QUÉ ELEGIRNOS */}
+      {/* ============================== */}
+      <section className="pb-24 sm:pb-32 px-6">
+        <div className="max-w-3xl mx-auto">
+          <p className="text-xs font-bold text-rm-blue uppercase tracking-[0.2em] mb-3 text-center">
+            Diferencial
+          </p>
+          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-center mb-14">
+            ¿Por qué elegirnos?
+          </h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {VENTAJAS.map((v) => (
+              <div key={v.title} className="liquid-glass rounded-xl p-6 flex gap-4 items-start">
+                <div className="shrink-0 w-10 h-10 bg-rm-blue/10 border border-rm-blue/20 rounded-lg flex items-center justify-center text-rm-blue">
+                  {VENTAJA_ICONS[v.icon]}
+                </div>
+                <div>
+                  <h3 className="text-base font-bold mb-1">{v.title}</h3>
+                  <p className="text-sm text-rm-text-muted leading-relaxed">{v.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============================== */}
+      {/* CONTACTO */}
       {/* ============================== */}
       <section id="contacto" className="pb-24 sm:pb-32 px-6 scroll-mt-20">
-        <div className="max-w-2xl mx-auto text-center">
-          <div className="liquid-glass rounded-2xl px-8 py-12 sm:px-12 sm:py-16">
-            <p className="text-sm text-orange-500 font-bold mb-6">
-              🏷️ 10% OFF abonando en efectivo
-            </p>
+        <div className="max-w-2xl mx-auto">
+          <div className="liquid-glass rounded-2xl px-8 py-12 sm:px-12 sm:py-14">
+            <div className="text-center mb-10">
+              <span className="inline-block px-3 py-1 bg-orange-500/10 border border-orange-500/20 rounded-full text-orange-500 text-xs font-bold mb-5">
+                🏷️ 10% OFF abonando en efectivo
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+                Encontranos acá
+              </h2>
+            </div>
 
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-3">
-              ¿Se rompió algo en casa?
-            </h2>
-            <p className="text-rm-text-muted mb-8">
-              Escribinos y te orientamos sin compromiso.
-            </p>
-
-            <a
-              href="https://wa.me/5491149723221"
-              className="inline-flex items-center gap-2.5 bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-3.5 rounded-full transition-all hover:shadow-lg hover:shadow-green-600/20 text-base"
-            >
-              <MessageCircle className="w-5 h-5" />
-              Escribir por WhatsApp
-            </a>
-
-            <div className="mt-10 pt-6 border-t border-rm-border/50 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-xs text-rm-text-muted">
-              <a href="tel:+5491149723221" className="flex items-center gap-1.5 hover:text-rm-text transition-colors">
-                <Phone className="w-3.5 h-3.5 text-rm-blue" />
-                11 4972-3221
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+              <a
+                href="tel:+5491149723221"
+                className="liquid-glass-subtle rounded-xl p-5 text-center hover:border-rm-blue/30 transition-colors group"
+              >
+                <div className="w-10 h-10 bg-rm-blue/10 border border-rm-blue/20 rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:bg-rm-blue/15 transition-colors">
+                  <Phone className="w-4 h-4 text-rm-blue" />
+                </div>
+                <p className="text-sm font-bold mb-0.5">Teléfono</p>
+                <p className="text-sm text-rm-text-muted">11 4972-3221</p>
               </a>
+
               <a
                 href="https://www.google.com/maps/dir/?api=1&destination=Ruiz+de+los+Llanos+3132,+Gregorio+de+Laferrere"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 hover:text-rm-text transition-colors"
+                className="liquid-glass-subtle rounded-xl p-5 text-center hover:border-rm-blue/30 transition-colors group"
               >
-                <MapPin className="w-3.5 h-3.5 text-rm-blue" />
-                Ruiz de los Llanos 3132, Laferrere
+                <div className="w-10 h-10 bg-rm-blue/10 border border-rm-blue/20 rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:bg-rm-blue/15 transition-colors">
+                  <MapPin className="w-4 h-4 text-rm-blue" />
+                </div>
+                <p className="text-sm font-bold mb-0.5">Dirección</p>
+                <p className="text-sm text-rm-text-muted">Ruiz de los Llanos 3132, Laferrere</p>
               </a>
-              <span>Lun a Vie · 9 a 18 hs</span>
+
+              <div className="liquid-glass-subtle rounded-xl p-5 text-center">
+                <div className="w-10 h-10 bg-rm-blue/10 border border-rm-blue/20 rounded-lg flex items-center justify-center mx-auto mb-3">
+                  <Clock className="w-4 h-4 text-rm-blue" />
+                </div>
+                <p className="text-sm font-bold mb-0.5">Horario</p>
+                <p className="text-sm text-rm-text-muted">Lun a Vie · 9 a 18 hs</p>
+              </div>
             </div>
           </div>
         </div>
