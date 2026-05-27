@@ -373,17 +373,27 @@ export default function Home() {
       {/* ============================== */}
       {/* FOOTER */}
       {/* ============================== */}
-      <footer className="px-6 pb-8">
-        <div className="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-rm-text-muted">
-          <div className="flex items-center gap-2">
-            <Image src="/images/logo-rm.png" alt="RM Logo" width={100} height={24} className="object-contain h-6 w-auto" />
-            <span>Servicio Técnico</span>
+      <footer className="px-6 pb-8 mt-10">
+        <div className="max-w-3xl mx-auto flex flex-col items-center gap-6 pt-8 border-t border-rm-border/50 text-rm-text-muted">
+          <div className="flex items-center justify-center gap-4 sm:gap-6 w-full">
+            <a 
+              href="https://www.facebook.com/serviotecnicoRM" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-rm-card border border-rm-border hover:border-blue-500 hover:text-blue-400 transition-all font-bold text-sm shadow-sm"
+            >
+              Facebook
+            </a>
+            <a 
+              href="https://www.instagram.com/serviciotecnicorm_/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-rm-card border border-rm-border hover:border-pink-500 hover:text-pink-400 transition-all font-bold text-sm shadow-sm"
+            >
+              Instagram
+            </a>
           </div>
-          <div className="flex items-center gap-4">
-            <a href="https://www.facebook.com/serviotecnicoRM" target="_blank" rel="noopener noreferrer" className="hover:text-rm-text transition-colors">Facebook</a>
-            <a href="https://www.instagram.com/serviciotecnicorm_/" target="_blank" rel="noopener noreferrer" className="hover:text-rm-text transition-colors">Instagram</a>
-            <span>© {new Date().getFullYear()}</span>
-          </div>
+          <span className="text-xs">© {new Date().getFullYear()} Todos los derechos reservados.</span>
         </div>
       </footer>
 
