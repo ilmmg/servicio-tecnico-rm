@@ -1,68 +1,104 @@
-import { MessageCircle, Phone, MapPin, Wrench, Settings, CheckCircle, Shield, Clock, Star, Zap } from "lucide-react";
+"use client";
+
+import { useEffect, useRef } from "react";
+import {
+  MessageCircle,
+  Phone,
+  MapPin,
+  Wrench,
+  Settings,
+  Shield,
+  Clock,
+  Search,
+  Snowflake,
+  Flame,
+  Wind,
+  Zap,
+  Cpu,
+  WashingMachine,
+  Refrigerator,
+  CookingPot,
+  Microwave,
+} from "lucide-react";
 import Link from "next/link";
 import ThemeToggleButton from "@/components/ThemeToggleButton";
 
-const SERVICIOS = [
-  "Heladeras",
-  "Freezers",
-  "Lavarropas",
-  "Secarropas",
-  "Microondas",
-  "Hornos",
-  "Aires acondicionados",
-  "Plaquetas Inverter",
-  "Motores eléctricos",
-];
+/* ============================== */
+/* DATA                           */
+/* ============================== */
 
-const VENTAJAS = [
-  {
-    icon: "shield",
-    title: "Garantía escrita",
-    desc: "Respaldamos cada reparación. Si vuelve a fallar, volvemos sin costo.",
-  },
-  {
-    icon: "zap",
-    title: "Diagnóstico digital",
-    desc: "Instrumental profesional para detectar fallas con precisión, sin adivinar.",
-  },
-  {
-    icon: "star",
-    title: "+20 años de experiencia",
-    desc: "Conocemos todas las marcas y modelos del mercado.",
-  },
-  {
-    icon: "clock",
-    title: "Respuesta rápida",
-    desc: "Coordinamos visita en el día o al siguiente. Sin demoras innecesarias.",
-  },
+const SERVICIOS = [
+  { name: "Heladeras", icon: Refrigerator },
+  { name: "Freezers", icon: Snowflake },
+  { name: "Lavarropas", icon: WashingMachine },
+  { name: "Secarropas", icon: Wind },
+  { name: "Microondas", icon: Microwave },
+  { name: "Hornos", icon: CookingPot },
+  { name: "Aires acondicionados", icon: Flame },
+  { name: "Plaquetas Inverter", icon: Cpu },
+  { name: "Motores eléctricos", icon: Zap },
 ];
 
 const PASOS = [
   {
     num: "01",
+    icon: MessageCircle,
     title: "Escribinos",
-    desc: "Contanos qué equipo es y qué le pasa. Te respondemos rápido por WhatsApp.",
+    desc: "Contanos qué equipo tenés y qué le pasa. Te respondemos en minutos por WhatsApp.",
+    highlight: "Sin compromiso",
   },
   {
     num: "02",
-    title: "Visitamos",
-    desc: "Vamos a tu casa con instrumental digital. Diagnosticamos y presupuestamos en el lugar.",
+    icon: Search,
+    title: "Diagnosticamos",
+    desc: "Vamos a tu domicilio con instrumental digital profesional. Te damos presupuesto en el momento, sin cargo.",
+    highlight: "Presupuesto gratis",
   },
   {
     num: "03",
-    title: "Reparamos",
-    desc: "Trabajamos con repuestos de calidad. Probamos todo y dejamos garantía escrita.",
+    icon: Shield,
+    title: "Reparamos con garantía",
+    desc: "Trabajamos con repuestos de calidad y probamos todo antes de irnos. Si vuelve a fallar, volvemos sin costo.",
+    highlight: "Garantía escrita",
   },
 ];
 
-const VENTAJA_ICONS: Record<string, React.ReactNode> = {
-  shield: <Shield className="w-5 h-5" />,
-  zap: <Zap className="w-5 h-5" />,
-  star: <Star className="w-5 h-5" />,
-  clock: <Clock className="w-5 h-5" />,
-};
+/* ============================== */
+/* SECTION REVEAL HOOK            */
+/* ============================== */
+function useSectionReveal() {
+  const refs = useRef<(HTMLElement | null)[]>([]);
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("revealed");
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+    );
+
+    refs.current.forEach((el) => {
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (index: number) => (el: HTMLElement | null) => {
+    refs.current[index] = el;
+  };
+}
+
+/* ============================== */
+/* COMPONENT                      */
+/* ============================== */
 export default function Home() {
+  const setRef = useSectionReveal();
+
   return (
     <div className="min-h-screen bg-rm-black text-rm-text transition-colors">
 
@@ -86,6 +122,12 @@ export default function Home() {
               Servicios
             </a>
             <a
+              href="#como-funciona"
+              className="hidden sm:block px-3 py-2 text-sm font-medium text-rm-text-muted hover:text-rm-text rounded-lg transition-colors"
+            >
+              Proceso
+            </a>
+            <a
               href="#contacto"
               className="hidden sm:block px-3 py-2 text-sm font-medium text-rm-text-muted hover:text-rm-text rounded-lg transition-colors"
             >
@@ -104,31 +146,48 @@ export default function Home() {
       </nav>
 
       {/* ============================== */}
-      {/* HERO */}
+      {/* HERO — v2.0 */}
       {/* ============================== */}
-      <section className="pt-32 pb-20 sm:pt-44 sm:pb-28 px-6">
-        <div className="max-w-3xl mx-auto text-center">
-          <p className="text-sm font-medium text-rm-text-muted tracking-wide mb-6 landing-fade-in">
-            Taller en Laferrere · +20 años reparando electrodomésticos
-          </p>
+      <section className="relative pt-32 pb-20 sm:pt-44 sm:pb-28 px-6 overflow-hidden">
+        {/* Glow animado */}
+        <div className="hero-glow" />
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.08] mb-6 landing-fade-in landing-delay-1">
+        <div className="relative z-10 max-w-3xl mx-auto text-center">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.08] mb-6 landing-fade-in">
             Tu equipo se rompió.
             <br />
             <span className="text-gradient-blue">Nosotros lo arreglamos.</span>
           </h1>
 
-          <p className="text-lg text-rm-text-muted max-w-lg mx-auto mb-10 leading-relaxed landing-fade-in landing-delay-2">
-            Diagnóstico con instrumental digital, presupuesto antes de reparar y garantía escrita. Así trabajamos.
+          <p className="text-lg text-rm-text-muted max-w-xl mx-auto mb-8 leading-relaxed landing-fade-in landing-delay-1">
+            Servicio técnico en Laferrere con más de 20 años de experiencia.
+            Vamos a tu domicilio, diagnosticamos y reparamos.
           </p>
 
+          {/* Trust pills integrados en el hero */}
+          <div className="flex flex-wrap items-center justify-center gap-2 mb-10 landing-fade-in landing-delay-2">
+            <span className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-rm-card border border-rm-border text-xs font-semibold text-rm-text-muted">
+              <Shield className="w-3.5 h-3.5 text-rm-blue" />
+              Garantía escrita
+            </span>
+            <span className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-rm-card border border-rm-border text-xs font-semibold text-rm-text-muted">
+              <Search className="w-3.5 h-3.5 text-rm-blue" />
+              Diagnóstico digital
+            </span>
+            <span className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-rm-card border border-rm-border text-xs font-semibold text-rm-text-muted">
+              <Clock className="w-3.5 h-3.5 text-rm-blue" />
+              Respuesta rápida
+            </span>
+          </div>
+
+          {/* CTA principal */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 landing-fade-in landing-delay-3">
             <a
               href="https://wa.me/5491149723221"
               className="flex items-center gap-2.5 bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-3.5 rounded-full transition-all hover:shadow-lg hover:shadow-green-600/20 text-base"
             >
               <MessageCircle className="w-5 h-5" />
-              Consultar por WhatsApp
+              Escribinos por WhatsApp
             </a>
             <a
               href="tel:+5491149723221"
@@ -142,55 +201,43 @@ export default function Home() {
       </section>
 
       {/* ============================== */}
-      {/* TRUST MARKERS */}
+      {/* QUÉ REPARAMOS — v2.0 con íconos */}
       {/* ============================== */}
-      <section className="pb-20 sm:pb-24 px-6 landing-fade-in landing-delay-4">
-        <div className="max-w-3xl mx-auto">
-          <div className="liquid-glass-subtle rounded-2xl px-6 py-5 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm text-rm-text-muted font-medium">
-            <span className="flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-green-500" />
-              Visita a domicilio
-            </span>
-            <span className="hidden sm:block w-1 h-1 bg-rm-border rounded-full" />
-            <span className="flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-green-500" />
-              Garantía escrita
-            </span>
-            <span className="hidden sm:block w-1 h-1 bg-rm-border rounded-full" />
-            <span className="flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-green-500" />
-              Presupuesto sin cargo
-            </span>
-          </div>
-        </div>
-      </section>
-
-      {/* ============================== */}
-      {/* QUÉ REPARAMOS */}
-      {/* ============================== */}
-      <section id="servicios" className="pb-24 sm:pb-32 px-6 scroll-mt-20">
+      <section
+        id="servicios"
+        className="pb-24 sm:pb-32 px-6 scroll-mt-20 reveal-section"
+        ref={setRef(0)}
+      >
         <div className="max-w-3xl mx-auto">
           <p className="text-xs font-bold text-rm-blue uppercase tracking-[0.2em] mb-3 text-center">
             Especialidad
           </p>
-          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-center mb-10">
+          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-center mb-12">
             Línea blanca y electrónica
           </h2>
 
-          <div className="flex flex-wrap justify-center gap-2.5">
-            {SERVICIOS.map((item) => (
-              <span
-                key={item}
-                className="px-4 py-2 bg-rm-card border border-rm-border rounded-full text-rm-text-muted text-sm font-medium hover:border-rm-blue/30 hover:text-rm-text transition-colors cursor-default"
-              >
-                {item}
-              </span>
-            ))}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {SERVICIOS.map((item) => {
+              const Icon = item.icon;
+              return (
+                <div key={item.name} className="service-card">
+                  <div className="service-icon">
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <span className="text-sm font-semibold text-rm-text">
+                    {item.name}
+                  </span>
+                </div>
+              );
+            })}
           </div>
 
-          <p className="text-center text-sm text-rm-text-muted mt-6">
-            ¿No está en la lista?{" "}
-            <a href="https://wa.me/5491149723221" className="text-rm-blue hover:underline font-medium">
+          <p className="text-center text-sm text-rm-text-muted mt-8">
+            ¿Tu equipo no está en la lista?{" "}
+            <a
+              href="https://wa.me/5491149723221"
+              className="text-rm-blue hover:underline font-medium"
+            >
               Consultanos →
             </a>
           </p>
@@ -198,79 +245,86 @@ export default function Home() {
       </section>
 
       {/* ============================== */}
-      {/* CÓMO FUNCIONA */}
+      {/* CÓMO FUNCIONA — v2.0 timeline  */}
       {/* ============================== */}
-      <section className="pb-24 sm:pb-32 px-6">
+      <section
+        id="como-funciona"
+        className="pb-24 sm:pb-32 px-6 scroll-mt-20 reveal-section"
+        ref={setRef(1)}
+      >
         <div className="max-w-3xl mx-auto">
           <p className="text-xs font-bold text-rm-blue uppercase tracking-[0.2em] mb-3 text-center">
             Proceso
           </p>
-          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-center mb-14">
+          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-center mb-16">
             Simple y sin vueltas
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {PASOS.map((step) => (
-              <div key={step.num} className="liquid-glass rounded-xl p-6 text-center md:text-left">
-                <p className="text-3xl font-extrabold text-rm-blue/20 mb-3 tracking-tight">
-                  {step.num}
-                </p>
-                <h3 className="text-base font-bold mb-2">
-                  {step.title}
-                </h3>
-                <p className="text-sm text-rm-text-muted leading-relaxed">
-                  {step.desc}
-                </p>
-              </div>
-            ))}
+          {/* Timeline */}
+          <div className="relative">
+            {/* Connector line (hidden on mobile, replaced by vertical) */}
+            <div className="timeline-connector hidden md:block" />
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-5">
+              {PASOS.map((step) => {
+                const Icon = step.icon;
+                return (
+                  <div key={step.num} className="flex flex-col items-center text-center relative">
+                    {/* Dot */}
+                    <div className="timeline-dot timeline-dot-active mb-5">
+                      <Icon className="w-6 h-6 text-rm-blue" />
+                    </div>
+
+                    {/* Step number */}
+                    <p className="text-xs font-bold text-rm-blue uppercase tracking-widest mb-2">
+                      Paso {step.num}
+                    </p>
+
+                    {/* Title */}
+                    <h3 className="text-lg font-bold mb-2">
+                      {step.title}
+                    </h3>
+
+                    {/* Description */}
+                    <p className="text-sm text-rm-text-muted leading-relaxed mb-3 max-w-[280px]">
+                      {step.desc}
+                    </p>
+
+                    {/* Highlight tag */}
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rm-blue/8 border border-rm-blue/15 text-xs font-semibold text-rm-blue">
+                      {step.highlight}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
 
       {/* ============================== */}
-      {/* POR QUÉ ELEGIRNOS */}
+      {/* CONTACTO + CTA FINAL — v2.0   */}
       {/* ============================== */}
-      <section className="pb-24 sm:pb-32 px-6">
-        <div className="max-w-3xl mx-auto">
-          <p className="text-xs font-bold text-rm-blue uppercase tracking-[0.2em] mb-3 text-center">
-            Diferencial
-          </p>
-          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-center mb-14">
-            ¿Por qué elegirnos?
-          </h2>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            {VENTAJAS.map((v) => (
-              <div key={v.title} className="liquid-glass rounded-xl p-6 flex gap-4 items-start">
-                <div className="shrink-0 w-10 h-10 bg-rm-blue/10 border border-rm-blue/20 rounded-lg flex items-center justify-center text-rm-blue">
-                  {VENTAJA_ICONS[v.icon]}
-                </div>
-                <div>
-                  <h3 className="text-base font-bold mb-1">{v.title}</h3>
-                  <p className="text-sm text-rm-text-muted leading-relaxed">{v.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ============================== */}
-      {/* CONTACTO */}
-      {/* ============================== */}
-      <section id="contacto" className="pb-24 sm:pb-32 px-6 scroll-mt-20">
+      <section
+        id="contacto"
+        className="pb-24 sm:pb-32 px-6 scroll-mt-20 reveal-section"
+        ref={setRef(2)}
+      >
         <div className="max-w-2xl mx-auto">
           <div className="liquid-glass rounded-2xl px-8 py-12 sm:px-12 sm:py-14">
             <div className="text-center mb-10">
-              <span className="inline-block px-3 py-1 bg-orange-500/10 border border-orange-500/20 rounded-full text-orange-500 text-xs font-bold mb-5">
+              <span className="inline-block px-4 py-1.5 promo-badge rounded-full text-orange-400 text-xs font-bold mb-5">
                 🏷️ 10% OFF abonando en efectivo
               </span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-                Encontranos acá
+              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-2">
+                ¿Listo para reparar?
               </h2>
+              <p className="text-sm text-rm-text-muted">
+                Encontranos por estos medios
+              </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-10">
               <a
                 href="tel:+5491149723221"
                 className="liquid-glass-subtle rounded-xl p-5 text-center hover:border-rm-blue/30 transition-colors group"
@@ -302,6 +356,17 @@ export default function Home() {
                 <p className="text-sm font-bold mb-0.5">Horario</p>
                 <p className="text-sm text-rm-text-muted">Lun a Vie · 9 a 18 hs</p>
               </div>
+            </div>
+
+            {/* CTA final de cierre */}
+            <div className="text-center">
+              <a
+                href="https://wa.me/5491149723221"
+                className="inline-flex items-center gap-2.5 bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-3.5 rounded-full transition-all hover:shadow-lg hover:shadow-green-600/20 text-base"
+              >
+                <MessageCircle className="w-5 h-5" />
+                Escribinos por WhatsApp
+              </a>
             </div>
           </div>
         </div>

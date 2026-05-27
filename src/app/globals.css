@@ -287,3 +287,149 @@ select option {
 .landing-delay-2 { animation-delay: 0.2s; }
 .landing-delay-3 { animation-delay: 0.35s; }
 .landing-delay-4 { animation-delay: 0.5s; }
+.landing-delay-5 { animation-delay: 0.65s; }
+
+/* ================================== */
+/* === HERO GLOW 2.0 =============== */
+/* ================================== */
+@keyframes hero-glow-pulse {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50% { opacity: 0.55; transform: scale(1.08); }
+}
+.hero-glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(37,99,235,0.12) 0%, rgba(37,99,235,0.03) 50%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: hero-glow-pulse 6s ease-in-out infinite;
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 0;
+}
+:root.light .hero-glow {
+  background: radial-gradient(circle, rgba(37,99,235,0.08) 0%, rgba(37,99,235,0.02) 50%, transparent 70%);
+}
+
+/* ================================== */
+/* === TIMELINE 2.0 ================ */
+/* ================================== */
+.timeline-connector {
+  position: absolute;
+  top: 28px;
+  left: 28px;
+  right: 28px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-rm-border) 0%, var(--color-rm-blue) 50%, var(--color-rm-border) 100%);
+  opacity: 0.3;
+  z-index: 0;
+}
+
+@media (max-width: 767px) {
+  .timeline-connector {
+    left: 28px;
+    right: auto;
+    top: 28px;
+    bottom: 28px;
+    width: 2px;
+    height: auto;
+    background: linear-gradient(180deg, var(--color-rm-border) 0%, var(--color-rm-blue) 50%, var(--color-rm-border) 100%);
+  }
+}
+
+.timeline-dot {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  transition: all 0.3s;
+}
+
+.timeline-dot-active {
+  background: linear-gradient(135deg, rgba(37,99,235,0.15) 0%, rgba(37,99,235,0.05) 100%);
+  border: 2px solid rgba(37,99,235,0.3);
+  box-shadow: 0 0 20px rgba(37,99,235,0.1);
+}
+
+.timeline-dot-active:hover {
+  border-color: rgba(37,99,235,0.5);
+  box-shadow: 0 0 30px rgba(37,99,235,0.2);
+}
+
+:root.light .timeline-dot-active {
+  background: linear-gradient(135deg, rgba(37,99,235,0.1) 0%, rgba(37,99,235,0.03) 100%);
+  box-shadow: 0 0 15px rgba(37,99,235,0.06);
+}
+
+/* ================================== */
+/* === SERVICE GRID 2.0 ============ */
+/* ================================== */
+.service-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.25rem 1rem;
+  border-radius: 1rem;
+  background: var(--color-rm-card);
+  border: 1px solid var(--color-rm-border);
+  transition: all 0.3s ease;
+  cursor: default;
+}
+.service-card:hover {
+  border-color: rgba(37,99,235,0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15), 0 0 0 1px rgba(37,99,235,0.1);
+}
+:root.light .service-card:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06), 0 0 0 1px rgba(37,99,235,0.1);
+}
+.service-card .service-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(37,99,235,0.08);
+  border: 1px solid rgba(37,99,235,0.12);
+  color: var(--color-rm-blue);
+  transition: background 0.3s;
+}
+.service-card:hover .service-icon {
+  background: rgba(37,99,235,0.14);
+}
+
+/* ================================== */
+/* === SECTION REVEAL ============== */
+/* ================================== */
+.reveal-section {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+.reveal-section.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ================================== */
+/* === PROMO BADGE ================= */
+/* ================================== */
+@keyframes promo-shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.promo-badge {
+  background: linear-gradient(90deg, rgba(249,115,22,0.1) 0%, rgba(249,115,22,0.2) 50%, rgba(249,115,22,0.1) 100%);
+  background-size: 200% auto;
+  animation: promo-shimmer 3s linear infinite;
+  border: 1px solid rgba(249,115,22,0.2);
+}
