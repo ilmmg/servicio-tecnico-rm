@@ -12,12 +12,9 @@ import {
   Search,
   Snowflake,
   Flame,
-  Wind,
-  Zap,
   Cpu,
   WashingMachine,
   Refrigerator,
-  CookingPot,
   Microwave,
 } from "lucide-react";
 import Link from "next/link";
@@ -32,12 +29,9 @@ const SERVICIOS = [
   { name: "Heladeras", icon: Refrigerator },
   { name: "Freezers", icon: Snowflake },
   { name: "Lavarropas", icon: WashingMachine },
-  { name: "Secarropas", icon: Wind },
   { name: "Microondas", icon: Microwave },
-  { name: "Hornos", icon: CookingPot },
   { name: "Aires acondicionados", icon: Flame },
   { name: "Plaquetas Inverter", icon: Cpu },
-  { name: "Motores eléctricos", icon: Zap },
 ];
 
 const PASOS = [
