@@ -39,11 +39,8 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: SidebarProps) {
         <div className="relative z-10 flex flex-col h-full">
           <div className="flex items-center justify-between p-5 border-b border-white/5 min-h-[72px]">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 flex items-center justify-center overflow-hidden shrink-0 rounded-xl">
-                <Image src="/images/logo-rm.png" alt="RM Logo" width={40} height={40} className="object-contain" />
-              </div>
-              <div className="overflow-hidden">
-                <span className="text-lg font-extrabold italic tracking-tight">RM</span>{" "}
+              <Image src="/images/logo-rm.png" alt="RM Logo" width={120} height={36} className="object-contain h-9 w-auto" />
+              <div className="overflow-hidden flex items-center mt-1">
                 <span className="text-xs font-bold text-rm-text-muted tracking-wider">ADMIN</span>
               </div>
             </div>

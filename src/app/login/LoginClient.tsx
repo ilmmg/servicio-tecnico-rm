@@ -65,10 +65,8 @@ export default function LoginClient({ nextPath, errorParam }: LoginClientProps) 
       <div className="relative z-10 w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
         <section className="liquid-glass glass-shine rounded-3xl p-8 sm:p-10 flex flex-col justify-between min-h-[520px]">
           <div>
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-12 h-12 flex items-center justify-center overflow-hidden rounded-2xl">
-                <Image src="/images/logo-rm.png" alt="RM Logo" width={48} height={48} className="object-contain" />
-              </div>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 mb-8">
+              <Image src="/images/logo-rm.png" alt="RM Logo" width={180} height={60} className="object-contain h-14 w-auto shrink-0" />
               <div>
                 <p className="text-xs uppercase tracking-[0.2em] text-rm-text-muted font-bold mb-1">Acceso privado</p>
                 <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tighter">Ingreso al panel</h1>

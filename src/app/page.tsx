@@ -108,11 +108,8 @@ export default function Home() {
       {/* ============================== */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-rm-black/80 backdrop-blur-md border-b border-rm-border/50">
         <div className="max-w-4xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 flex items-center justify-center overflow-hidden rounded-lg">
-              <Image src="/images/logo-rm.png" alt="RM Logo" width={32} height={32} className="object-contain" />
-            </div>
-            <span className="text-lg font-extrabold tracking-tight">RM</span>
+          <Link href="/" className="flex items-center">
+            <Image src="/images/logo-rm.png" alt="RM Logo" width={150} height={40} className="object-contain h-10 w-auto" />
           </Link>
 
           <div className="flex items-center gap-1">
@@ -379,10 +376,7 @@ export default function Home() {
       <footer className="px-6 pb-8">
         <div className="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-rm-text-muted">
           <div className="flex items-center gap-2">
-            <div className="w-5 h-5 flex items-center justify-center overflow-hidden rounded-md">
-              <Image src="/images/logo-rm.png" alt="RM Logo" width={20} height={20} className="object-contain" />
-            </div>
-            <span className="font-bold text-rm-text">RM</span>
+            <Image src="/images/logo-rm.png" alt="RM Logo" width={100} height={24} className="object-contain h-6 w-auto" />
             <span>Servicio Técnico</span>
           </div>
           <div className="flex items-center gap-4">
