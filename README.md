@@ -25,7 +25,7 @@ RM Servicio Técnico es una aplicación web para operar un servicio técnico de 
 
 ```bash
 cd servicio-tecnico-rm
-npm ci
+npm install
 cat <<'EOF' > .env.local
 NEXT_PUBLIC_SUPABASE_URL=tu_url_de_supabase
 NEXT_PUBLIC_SUPABASE_ANON_KEY=tu_anon_key_de_supabase
