@@ -24,7 +24,7 @@ RM Servicio Técnico es una aplicación web para operar un servicio técnico de 
 ## Instalación
 
 ```bash
-cd /tmp/workspace/ilmmg/servicio-tecnico-rm
+cd servicio-tecnico-rm
 npm ci
 cat <<'EOF' > .env.local
 NEXT_PUBLIC_SUPABASE_URL=tu_url_de_supabase
