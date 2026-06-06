@@ -10,7 +10,7 @@ import StatsCard from "./components/StatsCard";
 import Link from "next/link";
 
 export default function AdminDashboard() {
-  const { productos, loaded: invLoaded, getStats: getInvStats } = useInventory();
+  const { loaded: invLoaded, getStats: getInvStats } = useInventory();
   const { ordenes, loaded: ordLoaded, getStats: getOrdStats } = useOrders();
   const { ventas, loaded: salesLoaded } = useSales();
 

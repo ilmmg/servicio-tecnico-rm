@@ -4,7 +4,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Package, ClipboardList, Home, Snowflake, Link as LinkIcon, ShoppingCart, X } from "lucide-react";
+import { LayoutDashboard, Package, ClipboardList, Home, Link as LinkIcon, ShoppingCart, X } from "lucide-react";
 import ThemeToggleButton from "@/components/ThemeToggleButton";
 import LogoutButton from "./LogoutButton";
 

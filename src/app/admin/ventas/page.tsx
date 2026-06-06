@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect, Suspense } from "react";
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import Tooltip from "@/app/admin/components/Tooltip";
 import { Search, ShoppingCart, Plus, Minus, Trash2, CheckCircle2, User, CreditCard, Receipt, Clock, Printer } from "lucide-react";
@@ -118,7 +119,11 @@ function VentasContent() {
                       <span className="text-[10px] sm:text-xs font-bold text-emerald-400 whitespace-nowrap">x{p.cantidad}</span>
                     </div>
                     <div className="flex-1 mb-1.5 sm:mb-2">
-                      {p.imagen && (<div className="w-full h-16 sm:h-24 bg-white rounded-lg mb-2 flex items-center justify-center p-1.5 overflow-hidden shadow-inner"><img src={p.imagen} alt={p.nombre} className="w-full h-full object-contain mix-blend-multiply" /></div>)}
+                      {p.imagen && (
+                        <div className="relative w-full h-16 sm:h-24 bg-white rounded-lg mb-2 flex items-center justify-center p-1.5 overflow-hidden shadow-inner">
+                          <Image src={p.imagen} alt={p.nombre} fill unoptimized className="object-contain mix-blend-multiply p-1.5" sizes="(max-width: 640px) 50vw, 200px" />
+                        </div>
+                      )}
                       <h3 className="font-bold text-white text-xs sm:text-sm line-clamp-2 group-hover:text-rm-blue transition-colors">{p.nombre}</h3>
                     </div>
                     <p className="text-sm sm:text-lg font-black text-white">{formatCurrency(p.precio)}</p>

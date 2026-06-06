@@ -5,7 +5,6 @@ import {
   MessageCircle,
   Phone,
   MapPin,
-  Wrench,
   Settings,
   Shield,
   Clock,

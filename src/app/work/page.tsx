@@ -1,16 +1,25 @@
 ﻿"use client";
 
 import { useState } from "react";
-import { Search, Snowflake, ClipboardList, Clock, CheckCircle2, AlertCircle, Wrench, Package, ArrowLeft } from "lucide-react";
+import { Search, Snowflake, ClipboardList, AlertCircle, ArrowLeft } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { ESTADO_ORDEN_LABELS, ESTADO_ORDEN_COLORS, formatDate } from "@/lib/utils";
+import { ESTADO_ORDEN_LABELS, ESTADO_ORDEN_COLORS } from "@/lib/utils";
+import type { EstadoOrden } from "@/lib/types";
 import Link from "next/link";
+
+type PublicOrdenResult = {
+  id: string;
+  equipo: string;
+  marca: string;
+  modelo: string;
+  estado: EstadoOrden;
+};
 
 export default function PublicWorkStatus() {
   const supabase = createClient();
   const [loading, setLoading] = useState(false);
   const [searchId, setSearchId] = useState("");
-  const [result, setResult] = useState<any | null>(null);
+  const [result, setResult] = useState<PublicOrdenResult | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
 
   const handleSearch = async (e: React.FormEvent) => {
@@ -29,7 +38,7 @@ export default function PublicWorkStatus() {
       } else if (data) {
         setResult(data.orden);
       }
-    } catch (err) {
+    } catch {
       setResult(null);
     }
     
