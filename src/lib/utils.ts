@@ -1,4 +1,30 @@
-﻿// === Utilidades ===
+// === Utilidades ===
+
+/**
+ * Convierte un texto al formato Sentence Case.
+ * La primera letra en mayúscula, el resto en minúsculas.
+ * Preserva siglas (palabras de 2-4 letras totalmente en mayúsculas, ej: ML, USD, GAS).
+ */
+export function toSentenceCase(text: string): string {
+  if (!text) return text;
+  const trimmed = text.trim();
+  if (!trimmed) return trimmed;
+
+  // Dividir en palabras y preservar siglas
+  const words = trimmed.split(/\s+/);
+  const normalized = words.map((word, index) => {
+    // Preservar siglas: palabras de 2-4 letras completamente en mayúsculas
+    if (/^[A-Z0-9]{2,4}$/.test(word)) return word;
+    // Primera palabra: primera letra mayúscula, resto minúsculas
+    if (index === 0) {
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    }
+    // Resto de palabras: todo en minúsculas
+    return word.toLowerCase();
+  });
+
+  return normalized.join(' ');
+}
 
 export function formatDate(dateString: string): string {
   const date = new Date(dateString);

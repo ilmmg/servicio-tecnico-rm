@@ -1,9 +1,10 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { Producto, DashboardStats } from "@/lib/types";
 import { toast } from "sonner";
+import { toSentenceCase } from "@/lib/utils";
 
 
 
@@ -31,7 +32,7 @@ function mapFromDB(row: Record<string, unknown>): Producto {
 // Mapea camelCase de la app a snake_case de la DB
 function mapToDB(data: Partial<Producto>): Record<string, unknown> {
   const map: Record<string, unknown> = {};
-  if (data.nombre !== undefined) map.nombre = data.nombre;
+  if (data.nombre !== undefined) map.nombre = toSentenceCase(data.nombre);
   if (data.categoria !== undefined) map.categoria = data.categoria;
   if (data.estado !== undefined) map.estado = data.estado;
   if (data.precio !== undefined) map.precio = data.precio;
